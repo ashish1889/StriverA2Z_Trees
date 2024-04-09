@@ -1,0 +1,60 @@
+//https://takeuforward.org/data-structure/top-view-of-a-binary-tree/
+
+//Code:
+
+class Solution
+{   
+    public:
+    map<int,int> mp;
+    
+    void traverse(Node *node,int level){
+     
+       if(node==nullptr)
+            return;
+        
+       if(mp.find(level)== mp.end())
+           mp[level]=node->data;
+       
+       traverse(node->right,level+1);
+       traverse(node->left,level-1);
+       
+       
+        
+    }
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    vector<int> topView(Node *root)
+    { 
+        vector<int> res;
+        //Your code here
+      //  traverse(root,0);
+      //  sort(mp.begin(),mp.end());
+      
+     queue<pair<Node*,int>> q;
+     q.push(make_pair(root,0));
+     
+     while(!q.empty())
+     {
+        Node* node = q.front().first;
+        int level = q.front().second;
+        q.pop();
+        if(mp.find(level)== mp.end())
+           mp[level]=node->data;
+        if(node->left)
+        q.push(make_pair(node->left,level-1));
+         if(node->right)
+        q.push(make_pair(node->right,level+1));
+        
+         
+     }
+        
+        for (auto itr = mp.begin();  itr != mp.end(); itr++)  
+          { 
+          //  cout<<"index: "<<itr->first<<" value: "<<itr->second<<endl; 
+            res.push_back(itr->second);
+          }
+          
+     return res;   
+    }
+
+};
